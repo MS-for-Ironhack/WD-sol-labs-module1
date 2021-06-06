@@ -110,10 +110,10 @@ function orderAlphabetically(moviesArr) {
 
 // Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 function turnHoursToMinutes(moviesArr) {
-  const moviesArrCopy = [...moviesArr];
+  const moviesArrCopy = Array.from(moviesArr) //[...moviesArr];
 
   const formatedMovies = moviesArrCopy.map(function (oneMovie) {
-    const formatedMovie = { ...oneMovie };
+    const formatedMovie = Object.assign({}, oneMovie) //{ ...oneMovie };
     formatedMovie.duration = durationToMinutes(oneMovie.duration);
 
     return formatedMovie;
@@ -123,27 +123,14 @@ function turnHoursToMinutes(moviesArr) {
 }
 
 function durationToMinutes(durationString) {
-  const timeStrings = durationString.split(" ");
+  const timeUnits = durationString.trim().split(" ");
+  
+  const min = parseInt(timeUnits.find(el=>el.includes("min"))) || 0;
+  const h = parseInt(timeUnits.find(el=>el.includes("h"))) || 0;
 
-  console.log("timeStrings", timeStrings);
-
-  const timeInMinutes = timeStrings.reduce(function (total, string) {
-    if (string.includes("h")) {
-      const numOfHours = parseInt(string);
-      let updatedTotal = total + convertHoursToMInutes(numOfHours);
-      return updatedTotal;
-    } else {
-      let updatedTotal = total + parseInt(string); // parse the minutes string   "33min"
-      return updatedTotal;
-    }
-  }, 0);
-
-  return timeInMinutes;
+  return `${(h*60) + min} min`;
 }
 
-function convertHoursToMInutes(hours) {
-  return hours * 60;
-}
 
 // BONUS Iteration: Best yearly rate average - Best yearly rate average
 function bestYearAvg(moviesArr) {
